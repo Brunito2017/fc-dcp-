@@ -11,9 +11,17 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/fetch-player/{eaId}', [PlayerController::class, 'fetchAndStore']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::resources([
+        'players' => PlayerController::class,
+    ]);
+
+    Route::prefix('players/{player}')->group(function () {
+        Route::get('/fetch-player/{eaId}', [PlayerController::class, 'fetchAndStore']);
+    });
+
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');

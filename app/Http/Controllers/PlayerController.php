@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use App\Models\Player;
 use Illuminate\Support\Facades\Log;
-
+use Inertia\Inertia;
 
 class PlayerController extends Controller
 {
@@ -39,5 +39,13 @@ class PlayerController extends Controller
             Log::error("Error fetching/storing player with EA ID {$eaId}: " . $e->getMessage());
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function index() {
+        $players = Player::all();
+        // dd($players);
+        return Inertia::render('Players/Index', [
+            'players' => $players,
+        ]);
     }
 }
